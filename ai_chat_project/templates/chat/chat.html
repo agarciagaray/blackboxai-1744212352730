@@ -44,15 +44,26 @@
             function addMessage(role, content) {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `p-4 rounded-lg ${role === 'user' ? 'bg-blue-100 self-end' : 'bg-gray-200'}`;
-                if (role === 'assistant' && content.includes('```')) {
-                    // Formatear bloques de código
-                    const formattedContent = content
-                        .replace(/```(\w*)\n([\s\S]*?)\n```/g, '<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto my-2"><code>$2</code></pre>')
-                        .replace(/\n/g, '<br>');
-                    messageDiv.innerHTML = `<p class="font-semibold">${role === 'user' ? 'Tú' : 'AI'}:</p><div>${formattedContent}</div>`;
-                } else {
-                    messageDiv.innerHTML = `<p class="font-semibold">${role === 'user' ? 'Tú' : 'AI'}:</p><p>${content.replace(/\n/g, '<br>')}</p>`;
+                let formattedContent = content;
+                
+                // Formatear bloques de código
+                if (content.includes('```')) {
+                    formattedContent = formattedContent
+                        .replace(/```(\w*)\n([\s\S]*?)\n```/g, '<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto my-2"><code>$2</code></pre>');
                 }
+                
+                // Formatear encabezados (###)
+                formattedContent = formattedContent
+                    .replace(/### (.*)/g, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>');
+                
+                // Formatear negritas (**texto**)
+                formattedContent = formattedContent
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
+                // Preservar saltos de línea
+                formattedContent = formattedContent.replace(/\n/g, '<br>');
+                
+                messageDiv.innerHTML = `<p class="font-semibold">${role === 'user' ? 'Tú' : 'AI'}:</p><div class="prose">${formattedContent}</div>`;
                 messagesContainer.appendChild(messageDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
