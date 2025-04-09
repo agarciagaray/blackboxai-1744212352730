@@ -1,3 +1,20 @@
+/* Styles for code blocks in AI responses */
+pre {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+}
+
+code {
+    white-space: pre-wrap;
+    display: block;
+}
+
 /* Additional custom styles can be added here */
 .message-container::-webkit-scrollbar {
     width: 8px;
